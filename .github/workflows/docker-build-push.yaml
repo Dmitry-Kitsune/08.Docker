@@ -30,10 +30,10 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: . 
+          context: ./${{ inputs.imageToBuild }}  # added this /${{ inputs.imageToBuild }}
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/nodejs:latest
+          tags: ghcr.io/${{ github.repository_owner }}:${{ inputs.imageToBuild }}:${{ inputs.tagImage }} #change here
           build-args: |
             SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}
 
