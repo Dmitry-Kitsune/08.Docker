@@ -58,7 +58,7 @@ jobs:
               "username": "GitHub Actions Bot",
               "icon_emoji": ":rocket:"
             }
-        env:
+        #env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       # Step 6: Send failure notification to Slack if the build fails
@@ -72,5 +72,5 @@ jobs:
               "username": "GitHub Actions Bot",
               "icon_emoji": ":exclamation:"
             }
-        env:
+        #env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
