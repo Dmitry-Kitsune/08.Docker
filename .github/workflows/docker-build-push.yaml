@@ -4,6 +4,16 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch: # Allow manual trigger with inputs
+    inputs:
+      imageToBuild:
+        description: 'The image directory to build'
+        required: true
+        default: 'my-nodejs-app'
+      tagImage:
+        description: 'Tag for the image'
+        required: true
+        default: 'latest'
 
 jobs:
   build:
@@ -30,10 +40,10 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: ./${{ inputs.imageToBuild }}  # added this /${{ inputs.imageToBuild }}
+          context: ./${{ github.event.inputs.imageToBuild }}  # this based on folder structure
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }} #change here
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }}
           build-args: |
             SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}
 
