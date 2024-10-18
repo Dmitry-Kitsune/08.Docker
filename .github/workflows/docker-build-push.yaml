@@ -33,7 +33,7 @@ jobs:
           context: ./${{ inputs.imageToBuild }}  # added this /${{ inputs.imageToBuild }}
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}:${{ inputs.imageToBuild }}:${{ inputs.tagImage }} #change here
+          tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }} #change here
           build-args: |
             SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}
 
