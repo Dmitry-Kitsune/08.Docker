@@ -1,3 +1,4 @@
+
 name: Build and Push Docker Image
 
 on:
@@ -43,7 +44,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }}
 
       # Step 5: Send success notification to Slack if the build succeeds
       - name: Send success notification to Slack
@@ -55,13 +56,13 @@ jobs:
               "text": "Docker image build notification:",
               "attachments": [
                 {
-                  "fallback": "Docker image built successfully: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
+                  "fallback": "Docker image built successfully: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }}",
                   "pretext": "Docker image build completed successfully! 🎉",
                   "color": "#36a64f",
                   "fields": [
                     {
                       "title": "Repository",
-                      "value": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
+                      "value": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }}",
                       "short": true
                     },
                     {
@@ -86,7 +87,7 @@ jobs:
                     },
                     {
                       "title": "Docker Image Status",
-                      "value": "Docker image is ready: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
+                      "value": "Docker image is ready: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }}",
                       "short": false
                     }
                   ]
@@ -106,13 +107,13 @@ jobs:
               "text": "Docker image build notification:",
               "attachments": [
                 {
-                  "fallback": "Docker image build failed for: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
+                  "fallback": "Docker image build failed for: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }}",
                   "pretext": "Docker image build encountered an error! ❌",
                   "color": "#FF0000",
                   "fields": [
                     {
                       "title": "Repository",
-                      "value": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
+                      "value": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }}",
                       "short": true
                     },
                     {
