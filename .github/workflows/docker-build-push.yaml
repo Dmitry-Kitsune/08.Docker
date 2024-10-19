@@ -43,7 +43,8 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}  
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}
+
       # Step 5: Send success notification to Slack if the build succeeds
       - name: Send success notification to Slack
         if: success()
@@ -80,7 +81,7 @@ jobs:
                     },
                     {
                       "title": "Actions URL",
-                      "value": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
+                      "value": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                       "short": false
                     },
                     {
@@ -105,7 +106,7 @@ jobs:
               "text": "Docker image build notification:",
               "attachments": [
                 {
-                  "fallback": "Docker image build failed for: tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
+                  "fallback": "Docker image build failed for: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
                   "pretext": "Docker image build encountered an error! ❌",
                   "color": "#FF0000",
                   "fields": [
@@ -131,7 +132,7 @@ jobs:
                     },
                     {
                       "title": "Actions URL",
-                      "value": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
+                      "value": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                       "short": false
                     },
                     {
