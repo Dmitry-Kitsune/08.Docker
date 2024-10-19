@@ -44,8 +44,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}
-          build-args: |
-            SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}
 
       # Step 5: Send success notification to Slack if the build succeeds
       - name: Send success notification to Slack
@@ -54,6 +52,7 @@ jobs:
         with:
           payload: |
             {
+              "text": "Docker image build notification:",
               "attachments": [
                 {
                   "fallback": "Docker image built successfully.",
@@ -82,7 +81,7 @@ jobs:
                     },
                     {
                       "title": "Actions URL",
-                      "value": "${{ github.event.workflow_run.html_url }}",
+                      "value": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                       "short": false
                     },
                     {
@@ -104,6 +103,7 @@ jobs:
         with:
           payload: |
             {
+              "text": "Docker image build notification:",
               "attachments": [
                 {
                   "fallback": "Docker image build failed.",
@@ -132,7 +132,7 @@ jobs:
                     },
                     {
                       "title": "Actions URL",
-                      "value": "${{ github.event.workflow_run.html_url }}",
+                      "value": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                       "short": false
                     },
                     {
