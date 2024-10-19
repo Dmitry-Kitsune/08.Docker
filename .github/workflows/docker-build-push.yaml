@@ -43,7 +43,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }} # Ensure 'latest' as default if no tagImage is provided
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}
           build-args: |
             SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}
 
@@ -58,8 +58,8 @@ jobs:
               "attachments": [
                 {
                   "fallback": "Docker image built successfully to ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
-                  "color": "good",
-                  "title": "Docker image build status",
+                  "color": "#36a64f",
+                  "title": "Docker Image Build Status",
                   "fields": [
                     {
                       "title": "Repository",
@@ -87,7 +87,7 @@ jobs:
                       "short": false
                     },
                     {
-                      "title": "Docker image status",
+                      "title": "Docker Image Status",
                       "value": "Docker image is ready: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
                       "short": false
                     }
@@ -109,8 +109,8 @@ jobs:
               "attachments": [
                 {
                   "fallback": "Docker image build failed for ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
-                  "color": "danger",
-                  "title": "Docker image build status",
+                  "color": "#FF0000",
+                  "title": "Docker Image Build Status",
                   "fields": [
                     {
                       "title": "Repository",
@@ -138,7 +138,7 @@ jobs:
                       "short": false
                     },
                     {
-                      "title": "Docker image status",
+                      "title": "Docker Image Status",
                       "value": "Docker image build failed :x:",
                       "short": false
                     }
