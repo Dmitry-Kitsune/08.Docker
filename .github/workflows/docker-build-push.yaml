@@ -43,7 +43,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}  
       # Step 5: Send success notification to Slack if the build succeeds
       - name: Send success notification to Slack
         if: success()
@@ -54,13 +54,13 @@ jobs:
               "text": "Docker image build notification:",
               "attachments": [
                 {
-                  "fallback": "Docker image built successfully: tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
+                  "fallback": "Docker image built successfully: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
                   "pretext": "Docker image build completed successfully! 🎉",
                   "color": "#36a64f",
                   "fields": [
                     {
                       "title": "Repository",
-                      "value": "tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
+                      "value": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
                       "short": true
                     },
                     {
@@ -80,12 +80,12 @@ jobs:
                     },
                     {
                       "title": "Actions URL",
-                      "value": "$tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
+                      "value": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
                       "short": false
                     },
                     {
                       "title": "Docker Image Status",
-                      "value": "Docker image is ready: tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
+                      "value": "Docker image is ready: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
                       "short": false
                     }
                   ]
@@ -111,7 +111,7 @@ jobs:
                   "fields": [
                     {
                       "title": "Repository",
-                      "value": "tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
+                      "value": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
                       "short": true
                     },
                     {
@@ -131,7 +131,7 @@ jobs:
                     },
                     {
                       "title": "Actions URL",
-                      "value": "tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
+                      "value": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
                       "short": false
                     },
                     {
