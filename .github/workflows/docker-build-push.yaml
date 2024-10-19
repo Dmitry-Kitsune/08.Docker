@@ -54,8 +54,10 @@ jobs:
         with:
           payload: |
             {
+              "text": "Docker image built and pushed successfully to GHCR :tada:",
               "attachments": [
                 {
+                  "fallback": "Docker image built successfully to ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
                   "color": "good",
                   "title": "Docker image build status",
                   "fields": [
@@ -103,8 +105,10 @@ jobs:
         with:
           payload: |
             {
+              "text": "Docker image build failed :x:",
               "attachments": [
                 {
+                  "fallback": "Docker image build failed for ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
                   "color": "danger",
                   "title": "Docker image build status",
                   "fields": [
