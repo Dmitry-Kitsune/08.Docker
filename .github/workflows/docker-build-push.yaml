@@ -55,10 +55,12 @@ jobs:
           payload: |
             {
               "text": "Docker image built and pushed successfully to GHCR :tada:",
+              "REPOSITORY": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}" 
               "username": "GitHub Actions Bot",
               "icon_emoji": ":rocket:"
             }
         env:
+          SLACK_COLOR: ${{ job.status }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       # Step 6: Send failure notification to Slack if the build fails
@@ -69,8 +71,10 @@ jobs:
           payload: |
             {
               "text": "Docker image build failed :x:",
+              "REPOSITORY": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}" 
               "username": "GitHub Actions Bot",
               "icon_emoji": ":exclamation:"
             }
         env:
+          SLACK_COLOR: ${{ job.status }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
