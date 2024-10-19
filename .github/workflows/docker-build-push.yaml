@@ -40,7 +40,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: .       # this based on folder structure
+          context: .
           file: ./Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }} # Ensure 'latest' as default if no tagImage is provided
@@ -54,20 +54,44 @@ jobs:
         with:
           payload: |
             {
-              "text": "*${{ github.repository_owner }}*",
               "attachments": [
                 {
                   "color": "good",
+                  "title": "Docker image build status",
                   "fields": [
-                    { "title": "Ref", "value": "${{ github.ref }}" },
-                    { "title": "Event", "value": "${{ github.event_name }}" },
-                    { "title": "Actions URL", "value": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" },
-                    { "title": "Commit", "value": "${{ github.sha }}" },
-                    { "title": "Docker image build status", "value": "Docker image is ready ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}" }
+                    {
+                      "title": "Repository",
+                      "value": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Ref",
+                      "value": "${{ github.ref }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Event",
+                      "value": "${{ github.event_name }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Commit",
+                      "value": "${{ github.sha }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Actions URL",
+                      "value": "${{ github.event.workflow_run.html_url }}",
+                      "short": false
+                    },
+                    {
+                      "title": "Docker image status",
+                      "value": "Docker image is ready: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
+                      "short": false
+                    }
                   ]
                 }
-              ],
-              "footer": "Powered By rtCamp's GitHub Actions Library | Triggered on this workflow run"
+              ]
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -79,20 +103,44 @@ jobs:
         with:
           payload: |
             {
-              "text": "*${{ github.repository_owner }}*",
               "attachments": [
                 {
                   "color": "danger",
+                  "title": "Docker image build status",
                   "fields": [
-                    { "title": "Ref", "value": "${{ github.ref }}" },
-                    { "title": "Event", "value": "${{ github.event_name }}" },
-                    { "title": "Actions URL", "value": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" },
-                    { "title": "Commit", "value": "${{ github.sha }}" },
-                    { "title": "Docker image build status", "value": "Docker image build failed :x:" }
+                    {
+                      "title": "Repository",
+                      "value": "ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Ref",
+                      "value": "${{ github.ref }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Event",
+                      "value": "${{ github.event_name }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Commit",
+                      "value": "${{ github.sha }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Actions URL",
+                      "value": "${{ github.event.workflow_run.html_url }}",
+                      "short": false
+                    },
+                    {
+                      "title": "Docker image status",
+                      "value": "Docker image build failed :x:",
+                      "short": false
+                    }
                   ]
                 }
-              ],
-              "footer": "Powered By rtCamp's GitHub Actions Library | Triggered on this workflow run"
+              ]
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
