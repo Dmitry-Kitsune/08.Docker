@@ -48,7 +48,7 @@ jobs:
       # Step 5: Send success notification to Slack if the build succeeds
       - name: Send success notification to Slack
         if: success()
-        uses: slackapi/slack-github-action@v1.23.0
+        uses: slackapi/slack-github-action@v1.27.0
         with:
           payload: |
             {
@@ -99,7 +99,7 @@ jobs:
       # Step 6: Send failure notification to Slack if the build fails
       - name: Send failure notification to Slack
         if: failure()
-        uses: slackapi/slack-github-action@v1.23.0
+        uses: slackapi/slack-github-action@v1.27.0
         with:
           payload: |
             {
