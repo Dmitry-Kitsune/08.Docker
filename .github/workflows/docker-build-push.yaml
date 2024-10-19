@@ -44,7 +44,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}
-
       # Step 5: Send success notification to Slack if the build succeeds
       - name: Send success notification to Slack
         if: success()
@@ -55,13 +54,13 @@ jobs:
               "text": "Docker image build notification:",
               "attachments": [
                 {
-                  "fallback": "Docker image built successfully: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
+                  "fallback": "Docker image built successfully: tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
                   "pretext": "Docker image build completed successfully! 🎉",
                   "color": "#36a64f",
                   "fields": [
                     {
                       "title": "Repository",
-                      "value": "ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
+                      "value": "tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
                       "short": true
                     },
                     {
@@ -81,12 +80,12 @@ jobs:
                     },
                     {
                       "title": "Actions URL",
-                      "value": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                      "value": "$tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
                       "short": false
                     },
                     {
                       "title": "Docker Image Status",
-                      "value": "Docker image is ready: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
+                      "value": "Docker image is ready: tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
                       "short": false
                     }
                   ]
@@ -106,13 +105,13 @@ jobs:
               "text": "Docker image build notification:",
               "attachments": [
                 {
-                  "fallback": "Docker image build failed for: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
+                  "fallback": "Docker image build failed for: tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
                   "pretext": "Docker image build encountered an error! ❌",
                   "color": "#FF0000",
                   "fields": [
                     {
                       "title": "Repository",
-                      "value": "ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
+                      "value": "tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
                       "short": true
                     },
                     {
@@ -132,7 +131,7 @@ jobs:
                     },
                     {
                       "title": "Actions URL",
-                      "value": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                      "value": "tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}",
                       "short": false
                     },
                     {
