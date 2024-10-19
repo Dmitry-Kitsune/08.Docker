@@ -1,4 +1,3 @@
-
 name: Build and Push Docker Image
 
 on:
@@ -95,7 +94,7 @@ jobs:
               ]
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
       # Step 6: Send failure notification to Slack if the build fails
       - name: Send failure notification to Slack
@@ -146,4 +145,4 @@ jobs:
               ]
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
