@@ -51,7 +51,7 @@ jobs:
         run: sudo apt-get install -y curl
 
       # Step 6: Test if the container serves data
-      - name: Test: Request Data
+      - name: Test Request Data
         run: |
           sleep 5 # Allow container time to initialize
           curl -s http://localhost:8080 || (echo "Container failed to respond!" && exit 1)
