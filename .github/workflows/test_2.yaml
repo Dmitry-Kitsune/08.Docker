@@ -58,17 +58,17 @@ jobs:
       # Step 6: Test if the container serves data
       - name: Test Request Data
         run: |
-          echo "Waiting for container to initialize..."
-          for i in {1..10}; do
-            if curl -s http://localhost:8080 > /dev/null; then
-              echo "Container is responding to requests!"
-              exit 0
-            fi
-            echo "Retrying in 5 seconds..."
-            sleep 5
-          done
-          echo "Container failed to respond after 50 seconds."
-          exit 1
+          echo "Testing default route..."
+          curl http://localhost:8080 -v
+          
+          echo "Testing /status endpoint..."
+          curl http://localhost:8080/status -v
+          
+          echo "Testing /test-data endpoint..."
+          curl http://localhost:8080/test-data -v
+          
+          echo "Testing /info endpoint with query param..."
+          curl "http://localhost:8080/info?param=test-query" -v
 
       # Step 7: Verify that the Docker image does not run as root
       - name: Non-Root Access Check
@@ -125,7 +125,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-          
+
       # Step 10: Send failure notification to Slack
       - name: Send failure notification to Slack
         if: failure()
