@@ -39,9 +39,9 @@ jobs:
       # Step 3: Build the Docker image
       - name: Build Docker Image
         run: |
-          docker build --file ./${{ github.event.inputs.imageToBuild }}/Dockerfile \
+          docker build --file ${{ github.event.inputs.imageToBuild }}/Dockerfile \
             --tag ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }} \
-            ./${{ github.event.inputs.imageToBuild }}
+            ${{ github.event.inputs.imageToBuild }}
 
       # Step 4: Run the Docker container for testing
       - name: Run Docker Container

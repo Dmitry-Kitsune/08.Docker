@@ -36,15 +36,15 @@ jobs:
       # Build Docker Image
       - name: Build Docker Image
         run: |
-          docker build --file ./${{ inputs.imageToBuild }}/Dockerfile \
-            --tag ghcr.io/dmitry-kitsune/${{ inputs.imageToBuild }}:${{ inputs.tagImage }} \
-            ./${{ inputs.imageToBuild }}
+          docker build --file ./${{ github.event.inputs.imageToBuild }}/Dockerfile \
+            --tag ghcr.io/dmitry-kitsune/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }} \
+            ./${{ github.event.inputs.imageToBuild }}
 
       # Run Docker Container for Testing
       - name: Run Docker Container
         run: |
-          docker run --name test-${{ inputs.imageToBuild }} -p 8080:80 -d \
-            ghcr.io/dmitry-kitsune/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}
+          docker run --name test-${{ github.event.inputs.imageToBuild }} -p 8080:80 -d \
+            ghcr.io/dmitry-kitsune/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }}
 
       # Install curl (if needed)
       - name: Install curl
@@ -60,15 +60,15 @@ jobs:
       - name: Non-Root Check
         uses: wetransform/gha-docker-nonroot@v1.0.3
         with:
-          image-ref: ghcr.io/dmitry-kitsune/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}
+          image-ref: ghcr.io/dmitry-kitsune/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }}
           fail-for-root: true
 
       # Stop and Remove Container
       - name: Cleanup
         if: always()
         run: |
-          docker stop test-${{ inputs.imageToBuild }}
-          docker rm test-${{ inputs.imageToBuild }}
+          docker stop test-${{ github.event.inputs.imageToBuild }}
+          docker rm test-${{ github.event.inputs.imageToBuild }}
 
   notification:
     needs: test_image
@@ -80,7 +80,7 @@ jobs:
         env:
           SLACK_CHANNEL: all-slack
           SLACK_COLOR: ${{ job.status }}
-          SLACK_MESSAGE: "Docker image test completed for ghcr.io/dmitry-kitsune/${{ inputs.imageToBuild }}:${{ inputs.tagImage }}"
+          SLACK_MESSAGE: "Docker image test completed for ghcr.io/dmitry-kitsune/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }}"
           SLACK_TITLE: Docker Image Test Status
           SLACK_USERNAME: GitHub Actions
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
