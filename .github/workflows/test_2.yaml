@@ -1,4 +1,4 @@
-name: Docker Image Test Workflow
+name: Docker Image Test 2 Workflow
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # Step 3: Build and push Docker image to GHCR
@@ -46,9 +46,9 @@ jobs:
           tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}
 
       # Step 4: Run the Docker container for testing
-      - name: Run Docker Container
+      - name: Run the Node.js App
         run: |
-          docker run --name test-container -p 8080:80 -d \
+          docker run --name nodejs-app -p 8080:8080 -d \
             ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}
 
       # Step 5: Install curl to test the running container
@@ -64,10 +64,10 @@ jobs:
               echo "Container is responding to requests!"
               exit 0
             fi
-            echo "Retrying in 2 seconds..."
-            sleep 2
+            echo "Retrying in 5 seconds..."
+            sleep 5
           done
-          echo "Container failed to respond after 20 seconds."
+          echo "Container failed to respond after 50 seconds."
           exit 1
 
       # Step 7: Verify that the Docker image does not run as root
@@ -81,8 +81,8 @@ jobs:
       - name: Cleanup Container
         if: always()
         run: |
-          docker stop test-container
-          docker rm test-container
+          docker stop nodejs-app
+          docker rm nodejs-app
 
       # Step 9: Send success notification to Slack
       - name: Send success notification to Slack
@@ -91,10 +91,10 @@ jobs:
         with:
           payload: |
             {
-              "text": "Docker image build notification:",
+              "text": "Docker image test notification:",
               "attachments": [
                 {
-                  "fallback": "Docker image built successfully: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
+                  "fallback": "Docker image test successfully: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
                   "pretext": "Docker image build completed successfully! 🎉",
                   "color": "#36a64f",
                   "fields": [
@@ -124,7 +124,8 @@ jobs:
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          
       # Step 10: Send failure notification to Slack
       - name: Send failure notification to Slack
         if: failure()
@@ -132,10 +133,10 @@ jobs:
         with:
           payload: |
             {
-              "text": "Docker image build notification:",
+              "text": "Docker image test notification:",
               "attachments": [
                 {
-                  "fallback": "Docker image build failed for: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
+                  "fallback": "Docker image test failed for: ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild || 'nodejs' }}:${{ github.event.inputs.tagImage || 'latest' }}",
                   "pretext": "Docker image build encountered an error! ❌",
                   "color": "#FF0000",
                   "fields": [
@@ -165,3 +166,4 @@ jobs:
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
