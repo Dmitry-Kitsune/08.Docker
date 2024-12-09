@@ -42,13 +42,11 @@ jobs:
           docker build --file ${{ github.event.inputs.imageToBuild }}/Dockerfile \
             --tag ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }} \
             ${{ github.event.inputs.imageToBuild }}
-
       # Step 4: Run the Docker container for testing
       - name: Run Docker Container
         run: |
           docker run --name test-container -p 8080:80 -d \
             ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.imageToBuild }}:${{ github.event.inputs.tagImage }}
-
       # Step 5: Install curl to test the running container
       - name: Install curl
         run: sudo apt-get install -y curl
@@ -58,7 +56,6 @@ jobs:
         run: |
           sleep 5 # Allow container time to initialize
           curl -s http://localhost:8080 || (echo "Container failed to respond!" && exit 1)
-
       # Step 7: Verify that the Docker image does not run as root
       - name: Non-Root Access Check
         uses: wetransform/gha-docker-nonroot@v1.0.3
@@ -72,7 +69,6 @@ jobs:
         run: |
           docker stop test-container
           docker rm test-container
-
       # Step 9: Send success notification to Slack
       - name: Send success notification to Slack
         if: success()
